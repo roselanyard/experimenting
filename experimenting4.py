@@ -3,10 +3,17 @@ import types
 import random
 import pygame
 
+# initialization
+
 pygame.init()
 pygame.display.init()
 pixel_display = pygame.Surface((64,64))
 display = pygame.display.set_mode((512,512))
+pygame.mixer.init()
+clock = pygame.time.Clock()
+running = True
+
+# assets
 
 piano_key_left_off = pygame.image.load("assets/piano/pianokeyleftoff.png")
 piano_key_left_on = pygame.image.load("assets/piano/pianokeylefton.png")
@@ -16,15 +23,11 @@ piano_roll = pygame.image.load("./assets/piano/pianoroll.png")
 note = pygame.image.load("./assets/piano/note.png")
 note_hit = pygame.image.load("./assets/piano/note_hit.png")
 
-running = True
-
-pygame.mixer.init()
-clock = pygame.time.Clock()
-
 piano_sound = pygame.mixer.Sound("./assets/UI Soundpack/UI Soundpack/MP3/Abstract1.mp3")
 hit_sound = pygame.mixer.Sound("./assets/UI Soundpack/UI Soundpack/MP3/Modern4.mp3")
 
-death_queue = []
+# classes
+
 class Key:
     def __init__(self):
         self.sprite = pygame.sprite.Sprite()
@@ -90,12 +93,12 @@ class Note():
         if not self.hit_status:
             self.sprite.image = note_hit
             self.play_hit_sound()
-            death_queue.append(self)
         self.hit_status = True
 
     def play_hit_sound(self):
         pygame.mixer.find_channel(force=True).play(hit_sound)
 
+# object instances
 
 pkey0 = Key()
 pkey1 = Key()
@@ -122,17 +125,21 @@ pianoroll0.update_position((0,16))
 note0 = Note()
 note0.update_position((0,60))
 
+# variables depending on object instances
+
 sounds = {'A4':None}
 keymap = {pygame.K_d:0,pygame.K_f:1,pygame.K_j:2,pygame.K_k:3}
 pkey_id_to_object = {0:pkey0, 1:pkey1, 2:pkey2, 3:pkey3}
 pkey_id_to_button = {0:button0, 1:button1, 2:button2, 3:button3}
 
-escape_tally = 0
-escape_counter = 0
-
 key_0_notes = {}
 
+# loop variables
+
+escape_tally = 0
+escape_counter = 0
 timer = 0
+
 while running:
 
     # pixel_display.blit(piano_key_left, (0, 0))
@@ -202,13 +209,10 @@ while running:
             xy = list(note0.sprite.position)
             xy[1] -= 1
             note0.sprite.position = tuple(xy)
-        for obj in death_queue:
-            death_queue.remove(obj)
-            del obj
 
 
 
     clock.tick(60)
-    timer = (timer + 1) % 30
+    timer = (timer + 1) % timer.__sizeof__()
     if escape_counter > 0:
         escape_counter -= 1
