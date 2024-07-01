@@ -42,6 +42,10 @@ users = dict()
 sessions = dict()
 
 
+def send(websock, message_json: str):
+    websock.send(message_json)
+
+
 async def authenticate_user(username: str, password_hash: str, lock_acquired_above: bool = False):
     async with data_lock:
         logger.debug("data lock acquired by authenticate user")
@@ -103,7 +107,7 @@ async def session_handler(lock_acquired_above: bool = False):
             if datetime.datetime.now() - sessions[user]['lastseen'] >= timeout_threshold:
                 termination_queue.append(user)
         for user in termination_queue:
-            await terminate_session(user,lock_acquired_above=True)
+            await terminate_session(user, lock_acquired_above=True)
         if not lock_acquired_above:
             data_lock.release()
             logger.debug("data lock released by session handler")
@@ -116,6 +120,15 @@ async def message_handler(websocket):
         username = "none"
         content = "none"
         message_json = ""
+
+        try:
+            await websocket.send(json.dumps("Debug message"))
+        except websockets.exceptions.WebSocketException:
+            logger.info("Message receipt could not be sent")
+        except ConnectionError:
+            logger.info("Message receipt could not be sent")
+
+
         try:
             message_json = await asyncio.wait_for(websocket.recv(), recv_timeout_threshold)
         except TimeoutError:
@@ -137,6 +150,14 @@ async def message_handler(websocket):
         print(username, "sends", content)
 
 
+        try:
+            await websocket.send(json.dumps("Received! :D"))
+        except websockets.exceptions.WebSocketException:
+            logger.info("Message receipt could not be sent")
+        except ConnectionError:
+            logger.info("Message receipt could not be sent")
+
+
 async def refresh_session(username, lock_acquired_above: bool = False):
     async with data_lock:
         logger.debug("data lock acquired by refresh_session")
@@ -144,14 +165,14 @@ async def refresh_session(username, lock_acquired_above: bool = False):
             sessions[username]['lastseen'] = datetime.datetime.now()
         except KeyError:
             logger.info("user session already terminated or does not exist")
-            await create_session(username,lock_acquired_above=True)
+            await create_session(username, lock_acquired_above=True)
         logger.debug("data lock released by create session")
 
 
 async def terminate_session(user, lock_acquired_above: bool = False):
     if not lock_acquired_above:
         try:
-            await asyncio.wait_for(data_lock.acquire(),lock_timeout_threshold)
+            await asyncio.wait_for(data_lock.acquire(), lock_timeout_threshold)
         except TimeoutError:
             logger.info("could not terminate session - lock timed out")
             return
@@ -165,12 +186,16 @@ async def terminate_session(user, lock_acquired_above: bool = False):
         data_lock.release()
         logger.debug("data lock released by terminate session")
 
+#async def gui():
+
 
 async def main():
     while True:
         websock = websockets.serve(message_handler, "127.0.0.1", 8001)  # ,ssl=ssl_)
         session_handler_task = asyncio.create_task(session_handler())
         session_handler_task.add_done_callback(_handle_task_result)
+        #gui_task = asyncio.create_task(gui())
+        #gui_task.add_done_callback(_handle_task_result)
         async with websock:
             await asyncio.Future()
 
@@ -183,6 +208,9 @@ def _handle_task_result(task: asyncio.Task):
         pass
     except Exception:
         logging.exception("Exception raised by %r", task)
+
+
+
 
 
 if __name__ == "__main__":
