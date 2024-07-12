@@ -1,3 +1,5 @@
+import time
+
 import pydantic
 import logging
 import asyncio
@@ -88,7 +90,7 @@ async def consume_game_event(game_event: tuple[uuid.UUID,exp10_data.PygameEvent]
                     if velocity[1] == -5:
                         new_velocity = (velocity[0], 0)
                         global_game_state.players.get(game_event[0]).sprite.velocity = new_velocity
-
+    global_game_state.timestamp = int(time.time_ns()/1000)
     await resend_game_state()
 
 async def game_event_handler():
@@ -122,7 +124,6 @@ async def game_tick_producer():
             global_game_state.players[player].sprite.position = new_position
         await resend_game_state()
         await asyncio.sleep(0.2)
-        #clock.tick(240)
 
 
 async def producer_handler(websocket: websockets.WebSocketServerProtocol,client_uuid: uuid.UUID) -> None:
@@ -133,8 +134,9 @@ async def producer_handler(websocket: websockets.WebSocketServerProtocol,client_
 async def resend_game_state():
     game_state_message_dict = dict()
     game_state_message_dict["data"] = global_game_state
+    game_state_message_dict["timestamp"] = (time.time_ns()/1000)
     game_state_message_obj = exp10_data.GameStateMessage(**game_state_message_dict)
-    game_state_message_obj_json = game_state_message_obj.json()
+    game_state_message_obj_json = game_state_message_obj.model_dump_json()
 
     await broadcast_outbound_messages.put(game_state_message_obj_json)
 
@@ -147,6 +149,7 @@ async def handler(websocket: websockets.WebSocketServerProtocol) -> None:
 
     init_game_state_message_dict = dict()
     init_game_state_message_dict["data"] = global_game_state
+    init_game_state_message_dict["timestamp"] = (time.time_ns()/1000)
     init_game_state_message_obj = exp10_data.GameStateMessage(**init_game_state_message_dict)
     init_game_state_message_obj_json = init_game_state_message_obj.json()
     await unicast_outbound_messages[client_uuid].put(init_game_state_message_obj_json)
@@ -155,7 +158,7 @@ async def handler(websocket: websockets.WebSocketServerProtocol) -> None:
 
     try:
         await asyncio.gather(consumer_handler(websocket,client_uuid), producer_handler(websocket,client_uuid),
-                             broadcaster(),game_event_handler(),game_tick_producer())
+                             broadcaster(),game_event_handler())#game_tick_producer())
     except (websockets.ConnectionClosedOK, websockets.ConnectionClosedError):
         server_logger.info("connection closed")
     finally:

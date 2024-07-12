@@ -1,9 +1,12 @@
 use std::net;
+use std::str;
 
 fn main() {
-    let socket = std::net::UdpSocket::bind("127.0.0.1:5001").expect("Could not connect to socket");
-    let mut buf = [0;10];
-    let (amt, src) = socket.recv_from()
+    let socket = net::UdpSocket::bind("127.0.0.1:5001").expect("Could not connect to socket");
+    let mut buf = [0;1000];
+    let (bytes_read, sender_addr) = socket.recv_from(&mut buf).expect("Failed to receive from socket");
+    let string = str::from_utf8(&buf).expect("Failed to convert from UTF-8");
+    println!("{}", string);
 }
 
 mod tree {

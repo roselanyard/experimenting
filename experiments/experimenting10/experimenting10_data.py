@@ -1,4 +1,6 @@
 import abc
+import time
+
 
 import pydantic
 import typing
@@ -20,6 +22,7 @@ class Player(pydantic.BaseModel):
 
 class GameState(pydantic.BaseModel):
     players: typing.Dict[uuid.UUID, Player]
+    timestamp: int
 
 
 class PygameEvent(pydantic.BaseModel):
@@ -63,11 +66,13 @@ def get_example_game_state():
     player_obj = get_default_player()
     game_state_dict["players"] = dict()
     game_state_dict["players"][uuid.uuid4()] = player_obj
+    game_state_dict["timestamp"] = int(time.time_ns()/1000)
     game_state_obj = GameState(**game_state_dict)
     return game_state_obj
 def get_init_game_state():
     game_state_dict = dict()
     game_state_dict["players"] = dict()
+    game_state_dict["timestamp"] = int(time.time_ns()/1000)
     game_state_obj = GameState(**game_state_dict)
     return game_state_obj
 
