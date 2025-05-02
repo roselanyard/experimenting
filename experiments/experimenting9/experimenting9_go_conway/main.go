@@ -28,9 +28,12 @@ const TARGET_FPS = 15
 
 const (
 	// game loop status codes
-	exiting = iota
-	menu    = iota
-	game    = iota
+	exiting    = iota
+	menu       = iota
+	game       = iota
+	songSelect = iota
+	gameConfig = iota
+	about      = iota
 )
 
 const (

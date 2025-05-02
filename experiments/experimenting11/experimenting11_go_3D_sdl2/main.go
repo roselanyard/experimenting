@@ -21,12 +21,70 @@ var raycasterMap = [][]int32{
 	{1, 1, 1, 1, 1, 1, 1, 1},
 }
 
+/* var exampleTexture = [][]int32{
+	{0, 1, 0, 1, 0, 1, 0, 1},
+	{1, 0, 1, 0, 1, 0, 1, 0},
+	{0, 1, 0, 1, 0, 1, 0, 1},
+	{1, 0, 1, 0, 1, 0, 1, 0},
+	{0, 1, 0, 1, 0, 1, 0, 1},
+	{1, 0, 1, 0, 1, 0, 1, 0},
+	{0, 1, 0, 1, 0, 1, 0, 1},
+	{1, 0, 1, 0, 1, 0, 1, 0},
+} */
+
+/* var exampleTexture = [][]int32{
+	{0, 0, 1, 1, 0, 0, 1, 1},
+	{0, 0, 1, 1, 0, 0, 1, 1},
+	{1, 1, 0, 0, 1, 1, 0, 0},
+	{1, 1, 0, 0, 1, 1, 0, 0},
+	{0, 0, 1, 1, 0, 0, 1, 1},
+	{0, 0, 1, 1, 0, 0, 1, 1},
+	{1, 1, 0, 0, 1, 1, 0, 0},
+	{1, 1, 0, 0, 1, 1, 0, 0},
+} */
+
+var exampleTexture = [][]int32{
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+}
+
 var playerPosition = []int32{mapS * 5, mapS * 5}
 var playerVelocity = 0.0
 var playerSize = 6
 var playerRaySize = 20
 var playerAngle = 0.0
 var playerAngularVelocity = 0.0
+var playerSideVelocity = 0.0
 
 func initRaycaster() (*sdl.Window, *sdl.Renderer, error) {
 	var sdlInitFlags uint32 = sdl.INIT_EVERYTHING
@@ -100,7 +158,21 @@ func drawRays3D(renderer *sdl.Renderer) {
 	var verticalX, verticalY float64
 	var oneDegreeInRadians = 0.01745329 // magic number
 	//rayAngle = playerAngle
-	rayAngle = playerAngle - oneDegreeInRadians*30
+	var raysToDraw int32 = 60
+	var darkerVariantOfMainColor = sdl.Color{
+		R: 127,
+		G: 0,
+		B: 0,
+		A: 0,
+	}
+	var lighterVariantOfMainColor = sdl.Color{
+		R: 255,
+		G: 0,
+		B: 0,
+		A: 0,
+	}
+
+	rayAngle = playerAngle - oneDegreeInRadians*float64(raysToDraw/2)
 	if rayAngle < 0 {
 		rayAngle += 2 * math.Pi
 	}
@@ -109,7 +181,7 @@ func drawRays3D(renderer *sdl.Renderer) {
 	}
 
 	renderer.SetDrawColor(0, 255, 0, 0)
-	for rayCount = 0; rayCount < 60; rayCount++ {
+	for rayCount = 0; rayCount < raysToDraw; rayCount++ {
 		// check horizontal lines
 		dof = 0
 		xOffset = 0
@@ -187,26 +259,118 @@ func drawRays3D(renderer *sdl.Renderer) {
 		}
 		var distanceHorizontal = getLineDistance(playerPosition[0], playerPosition[1], int32(horizontalX), int32(horizontalY))
 		var distanceVertical = getLineDistance(playerPosition[0], playerPosition[1], int32(verticalX), int32(verticalY))
+		var distance float64
 		if distanceVertical > distanceHorizontal {
 			rayX, rayY = horizontalX, horizontalY
+			distance = distanceHorizontal
+			renderer.SetDrawColor(darkerVariantOfMainColor.R, darkerVariantOfMainColor.G, darkerVariantOfMainColor.B, darkerVariantOfMainColor.A)
 		} else {
 			rayX, rayY = verticalX, verticalY
+			distance = distanceVertical
+			renderer.SetDrawColor(lighterVariantOfMainColor.R, lighterVariantOfMainColor.G, lighterVariantOfMainColor.B, lighterVariantOfMainColor.A)
 		}
-		math.Cos(rayX) // noop
-		math.Sin(rayY)
 		if horizontalX > math.MaxUint-1 {
 			horizontalX = 1
 		}
-		//renderer.DrawLine(playerPosition[0], playerPosition[1], int32(rayX), int32(rayY))
+		_, _ = rayX, rayY
+		/* renderer.DrawLine(playerPosition[0], playerPosition[1], int32(rayX), int32(rayY))*/
 		//renderer.DrawLine(playerPosition[0], playerPosition[1], int32(verticalX), int32(verticalY))
-		renderer.DrawLine(playerPosition[0], playerPosition[1], int32(horizontalX), int32(horizontalY))
+		//renderer.DrawLine(playerPosition[0], playerPosition[1], int32(horizontalX), int32(horizontalY))
 		//renderer.Present()
+
+		// draw 3D walls
+
+		var cosineAngle = playerAngle - rayAngle
+		if cosineAngle < 0 {
+			cosineAngle += 2 * math.Pi
+		} // doesn't wrap if it goes over for some reason
+		if cosineAngle > 2*math.Pi {
+			cosineAngle -= 2 * math.Pi
+		}
+
+		var distanceAdjusted = distance * math.Cos(cosineAngle)
+
+		var lineH float64 = float64(mapS*320) / distanceAdjusted
+		var textureYStep = 32.0 / lineH
+		var textureYOffset = 0.0
+		if lineH > 480 {
+			lineH = 480
+		}
+
+		// draw wall textures
+
+		var y int32
+		var textureY = textureYOffset * textureYStep
+		var textureX = int32(rayX/2) % 32
+		var lineOff = 240 - (int32(lineH) >> 1)
+
+		for y = 0; y < int32(lineH); y++ {
+			var colorValue = exampleTexture[int32(textureY)][textureX]
+			renderer.SetDrawColor(uint8(100*colorValue), 0, 0, 0)
+			var pixelRect = sdl.Rect{
+				X: rayCount * windowRect.W / 60,
+				Y: y + lineOff,
+				W: windowRect.H/60 + 1,
+				H: 1,
+			}
+			renderer.FillRect(&pixelRect)
+			textureY += textureYStep
+		}
+
+		var ThreeRayRect = sdl.Rect{
+			rayCount * windowRect.W / 60,
+			windowRect.H/2 - int32(lineH/2),
+			windowRect.W/60 + 1,
+			int32(lineH),
+		}
+		_ = ThreeRayRect
+		/* var err = renderer.FillRect(&ThreeRayRect)
+		if err != nil {
+			panic(err)
+		} */
+
+		// draw floors
+		var fixAng = playerAngle - rayAngle
+		if fixAng < 0 {
+			fixAng += 2 * math.Pi
+		}
+		if fixAng > 2*math.Pi {
+			fixAng -= 2 * math.Pi
+		} // correct so far
+
+		for y := lineOff + int32(lineH); y < 480; y++ {
+			var dy float64 = float64(y - (480 / 2))
+			//var degRayAngle = (rayAngle / 2 * math.Pi) * 360
+
+			var raFix = math.Cos(fixAng)
+			var textureX = (float64(playerPosition[0]) / 2) + math.Cos(rayAngle)*158*(32/dy/raFix)
+			var textureY = (float64(playerPosition[1]) / 2) + math.Sin(rayAngle)*158*(32/dy/raFix)
+			var colorValue float64 = float64(exampleTexture[int32(textureX)&31][int32(textureY)&31])
+			renderer.SetDrawColor(uint8(colorValue*128), 0, 0, 0)
+			renderer.FillRect(&sdl.Rect{
+				rayCount * windowRect.W / 60, y,
+				8 + 1, 1,
+			})
+			// draw ceiling
+			textureY = (float64(playerPosition[1]) / 2) + math.Sin(rayAngle)*158*(32/dy/raFix)
+			colorValue = float64(exampleTexture[int32(textureX)&31][int32(textureY)&31])
+			renderer.SetDrawColor(uint8(colorValue*128), 0, 0, 0)
+			renderer.FillRect(&sdl.Rect{
+				rayCount * windowRect.W / 60, 480 - (y - 14), //hack
+				8 + 1, 1,
+			})
+
+			//renderer.DrawPoint(rayCount*640/60, y)
+		}
+
+		// select next ray angle
+
 		rayAngle += oneDegreeInRadians
 		if rayAngle >= 2*math.Pi {
 			rayAngle -= 2 * math.Pi
 		}
-	}
 
+	}
 }
 
 func getLineDistance(x1, y1, x2, y2 int32) float64 {
@@ -225,6 +389,10 @@ func handleKeys(event sdl.KeyboardEvent) {
 			playerAngularVelocity = 0.2
 		case sdl.K_a:
 			playerAngularVelocity = -0.2
+		case sdl.K_q:
+			playerSideVelocity = 5
+		case sdl.K_e:
+			playerSideVelocity = -5
 		}
 	case sdl.RELEASED:
 		switch event.Keysym.Sym {
@@ -236,6 +404,10 @@ func handleKeys(event sdl.KeyboardEvent) {
 			playerAngularVelocity = 0
 		case sdl.K_d:
 			playerAngularVelocity = 0
+		case sdl.K_q:
+			playerSideVelocity = 0
+		case sdl.K_e:
+			playerSideVelocity = 0
 		}
 	}
 }
@@ -263,8 +435,12 @@ func handleKeyEvents() {
 	}
 }
 func tick() {
-	playerPosition[0] += int32(math.Cos(playerAngle) * float64(playerVelocity))
-	playerPosition[1] += int32(math.Sin(playerAngle) * float64(playerVelocity))
+	playerPosition[0] += int32(math.Cos(playerAngle)*float64(playerVelocity)) + int32(math.Sin(playerAngle)*float64(playerSideVelocity))
+	playerPosition[1] += int32(math.Sin(playerAngle)*float64(playerVelocity)) - int32(math.Cos(playerAngle)*float64(playerSideVelocity))
+	if raycasterMap[playerPosition[0]/mapS][playerPosition[1]/mapS] == 1 {
+		playerPosition[0] -= int32(math.Cos(playerAngle)*float64(playerVelocity)) + int32(math.Sin(playerAngle)*float64(playerSideVelocity))
+		playerPosition[1] -= int32(math.Sin(playerAngle)*float64(playerVelocity)) - int32(math.Cos(playerAngle)*float64(playerSideVelocity)) // hack
+	}
 	playerAngle = (math.Mod((float64(playerAngle) + playerAngularVelocity), (2 * math.Pi)))
 	if playerAngle < 0 {
 		playerAngle += 2 * math.Pi
@@ -293,6 +469,7 @@ func main() {
 		drawBlank(renderer)
 		drawMap2D(renderer)
 		drawPlayer(renderer)
+		drawBlank(renderer)
 		drawRays3D(renderer)
 		renderer.Present()
 		sdl.Delay(50)
